@@ -201,17 +201,24 @@ export default function HomePage() {
           POWERED BY <span className="text-lime">MISFITS</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5">
-          {crew.map(([name, role]) => (
+          {crew.map((m) => (
             <Reveal
-              key={name}
+              key={m.name}
               className="group relative aspect-square bg-[#101015] overflow-hidden cursor-default bg-[repeating-linear-gradient(100deg,rgba(243,240,231,0.1)_0_2px,transparent_2px_9px)]"
             >
-              <div className="absolute inset-0 flex items-center justify-center font-mono text-[10px] tracking-[0.16em] uppercase text-cream/30 text-center p-3">
-                [ MEMBER PORTRAIT ]
-              </div>
+              {m.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={m.image} alt={m.name} className="absolute inset-0 w-full h-full object-cover" />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center font-mono text-[10px] tracking-[0.16em] uppercase text-cream/30 text-center p-3">
+                  [ MEMBER PORTRAIT ]
+                </div>
+              )}
               <div className="absolute inset-0 bg-lime text-background flex flex-col justify-end p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <div className="font-display text-2xl leading-[0.94] uppercase">{name}</div>
-                <div className="font-mono text-[10px] tracking-[0.16em] uppercase mt-1.5">{role}</div>
+                <div className="font-display text-2xl leading-[0.94] uppercase">{m.name}</div>
+                {m.role && (
+                  <div className="font-mono text-[10px] tracking-[0.16em] uppercase mt-1.5">{m.role}</div>
+                )}
               </div>
             </Reveal>
           ))}

@@ -110,7 +110,7 @@ Each phase has a single verifiable exit condition — if that condition isn't me
 
 ---
 
-## Phase 4 — Railway project setup & first deploy — [ME] DONE, blocked on [YOU]
+## Phase 4 — Railway project setup & first deploy ✅ DONE
 
 **Why this is fourth:** everything before this was preparation; this is the first point where the actual Railway environment exists and can be tested against.
 
@@ -122,14 +122,18 @@ Each phase has a single verifiable exit condition — if that condition isn't me
 - ✅ **[ME]** Verified the entire sequence locally, exactly as Railway will run it: `npm run build` (clean) → `npx prisma migrate deploy` (correctly reports "No pending migrations to apply" against the already-migrated local Postgres) → `npm run start` (production server boots and correctly serves real data from Postgres, with the staff-gate middleware still redirecting unauthenticated `/admin` requests).
 - ✅ **[ME]** Verified `next start` correctly respects the `PORT` environment variable (tested by launching with `PORT=4123` and confirming it actually bound there) — this is exactly the mechanism Railway uses to tell the container which port to listen on, and it works with no extra configuration needed.
 - ✅ **[ME, upgraded]** GitHub connection sorted first — this surfaced an important, unrelated finding: the local git repository was actually rooted at `/Users/user` (your whole home directory), not this project folder, with zero commits and no remote (so nothing had leaked — but pushing from there would have pushed your entire home directory, other projects, and dotfiles to a public repo). Fixed properly: gave BBT_2.0 its own independent git repo (`git init` inside the project folder — this takes precedence over the outer one for anything run from here), reviewed every one of the 112 files that would be committed (confirmed `.env`, `node_modules`, `prisma/dev.db`, and the generated Prisma client all correctly stay out), fixed one real `.gitignore` bug found in the process (`.env*` was also excluding `.env.example`, the safe template file — added a `!.env.example` exception so it's tracked), scanned everything for secret-shaped strings before committing (clean), then committed and pushed to `https://github.com/TrishanCoderX/BigBongTheory` — confirmed live on GitHub, matches local HEAD exactly. Railway can now connect to this repo directly in the next step. **The old empty home-directory repo at `/Users/user/.git` still exists and is unused** — flagged for you to remove whenever convenient (`rm -rf ~/.git`), not touched here since deleting it wasn't asked for.
-- ⬜ **[YOU]** In Railway: create the project and connect it to `https://github.com/TrishanCoderX/BigBongTheory` (now pushed and ready).
-- ⬜ **[YOU]** Add the Postgres plugin if you haven't already (Phase 2.1 covered this as optional at the time) and copy its connection string.
-- ⬜ **[YOU]** Set environment variables in the Railway dashboard — from Phase 3: `DATABASE_URL` (Railway's Postgres plugin string, **not** the local one), `AUTH_SECRET` (`f026ca9baaa9ac0e0a4459a01a42e68f1cb0d153500e98438cf00b988fdfe655`, generated in Phase 3), `SEED_SUPER_PASSCODE` / `SEED_MOD_PASSCODE` / `SEED_GATE_PASSCODE` (generate your own real values now — don't reuse the local test ones from this session's transcript). `GOOGLE_CLIENT_ID`/`SECRET` and `RESEND_API_KEY`/`EMAIL_FROM` stay unset per the Phase 3 decisions.
-- ⬜ **[YOU]** Trigger the first deploy.
-- ⬜ **[YOU]** Run `npm run db:seed` once against the new production database (via Railway's shell/run command, with the `SEED_*` env vars set) — migrations apply automatically via `railway.json`'s start command, but seeding is a one-time manual step, same as it was locally in Phase 2.2.
-- ⬜ **[ME + YOU]** Read the build and runtime logs together once a real deploy exists — this is where Phase 1/2 assumptions get tested against Railway's actual environment for the first time. Paste me the logs (or describe what you see) and I'll help diagnose anything that comes up.
+- ✅ **[ME, once CLI access was set up]** Installed and authenticated the Railway CLI (user ran `railway login`), linked to the existing project, and drove the rest directly:
+  - Hit the very Node-version and Turbopack-cache bugs anticipated above on the first two real deploys — fixed both (see commits `30ca0c4` Node engines pin, `... ` Turbopack cache disable) and pushed.
+  - Discovered no Postgres database existed in the project yet — added one (`railway add --database postgres`).
+  - Set all production env vars via CLI: `DATABASE_URL` (Postgres's internal connection string), `AUTH_SECRET`, and fresh `SEED_SUPER_PASSCODE` / `SEED_MOD_PASSCODE` / `SEED_GATE_PASSCODE` (not the values printed earlier in this doc/chat).
+  - Triggered a redeploy — build succeeded, but the app still crashed at runtime (`The table public.Event does not exist`) because `railway.json`'s custom start command (meant to auto-run `prisma migrate deploy`) turned out **not to be honored** by Railway's current builder (confirmed via `railway status --json`: the live service's `startCommand` was `null` despite the config file specifying one — Railway has moved to a newer "Infrastructure as Code" config system and silently ignored the old-style `railway.json` start command).
+  - Rather than fight that migration path, ran the fix directly: registered an SSH key (`railway ssh keys add`), SSH'd straight into the running container (`railway ssh -- npx prisma migrate deploy`, then `railway ssh -- npm run db:seed`) — applied the schema and reference data directly against production.
+  - Generated a public domain (`railway domain`) — **https://bigbongtheory-production.up.railway.app**.
+  - Full smoke test against the live URL: all core pages 200, `/admin` and `/checkin` correctly gate unauthenticated access (307), `/api/events` returns real correctly-ordered data, staff login works with the real production passcode.
 
-**Exit criteria:** the Railway deploy succeeds, the app serves its homepage on the assigned `*.up.railway.app` domain, and the build/release logs show no errors (migrations applied, Prisma client generated, server started). **Not yet met — waiting on the [YOU] steps above.**
+**Known follow-up (not blocking, tracked for later):** the `railway.json` start command isn't actually driving migrations on deploy — right now, any future schema change needs a manual `railway ssh -- npx prisma migrate deploy` after each deploy that changes the schema. Fixing this properly means adopting Railway's newer Infrastructure-as-code (`.railway/railway.ts`) system or finding their currently-correct equivalent of a "pre-deploy command" — worth doing before this is treated as a long-term hands-off pipeline, not urgent for the site being live and working today.
+
+**Exit criteria:** the Railway deploy succeeds, the app serves its homepage on the assigned `*.up.railway.app` domain, and the build/release logs show no errors (migrations applied, Prisma client generated, server started). **Met** — site is live and fully functional at https://bigbongtheory-production.up.railway.app.
 
 ---
 
@@ -181,6 +185,6 @@ Phase 2's three sub-phases are strictly sequential (2.2 needs 2.1's schema/clien
 - Phase 2.2 — ✅ done
 - Phase 2.3 — ✅ done (Phase 2 complete)
 - Phase 3 — ✅ done
-- Phase 4 — 🟡 [ME] done, blocked on [YOU] (Railway account steps)
-- Phase 5 — not started
+- Phase 4 — ✅ done (live at https://bigbongtheory-production.up.railway.app)
+- Phase 5 — not started (mostly optional — see below)
 - Phase 6 — not started

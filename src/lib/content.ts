@@ -58,17 +58,22 @@ export const galleryExtra: GalleryFrame[] = [
   { tag: "EVENTS", caption: "FIRST COMMUNITY MEET, ONE MORE FOR THE ROOM", cols: 2, rows: 2, img: "/gallery/community-meet-group2.jpg" },
 ];
 
-export const crew = [
-  ["RIYA", "FILMMAKER"],
-  ["ARKO", "MUSICIAN"],
-  ["DEB", "PHOTOGRAPHER"],
-  ["NEEL", "PERFORMER"],
-  ["TUHIN", "DESIGNER"],
-  ["MOU", "CREATOR"],
-  ["SAM", "VIDEOGRAPHER"],
-  ["JOY", "EVENT FREAK"],
-  ["ANI", "DANGEROUS IDEAS"],
-  ["PIU", "MARKETER"],
+type CrewMember = { name: string; role?: string; image?: string };
+
+export const crew: CrewMember[] = [
+  { name: "RIYA", role: "FILMMAKER" },
+  { name: "ARKO", role: "MUSICIAN" },
+  { name: "DEB", role: "PHOTOGRAPHER" },
+  { name: "NEEL", role: "PERFORMER" },
+  { name: "TUHIN", role: "DESIGNER" },
+  { name: "MOU", role: "CREATOR" },
+  { name: "SAM", role: "VIDEOGRAPHER" },
+  { name: "JOY", role: "EVENT FREAK" },
+  { name: "ANI", role: "DANGEROUS IDEAS" },
+  { name: "PIU", role: "MARKETER" },
+  { name: "RAJDEEP RUDRA", image: "/crew/rajdeep-rudra.jpg" },
+  { name: "ATIG CHANDRA", image: "/crew/atig-chandra.jpg" },
+  { name: "ANIRUDDHA GHOSH", image: "/crew/aniruddha-ghosh.jpg" },
 ];
 
 export const expect = ["LIVE SETS", "OPEN MIC", "SHORT FILMS", "JAM CORNER", "ZINE TABLE", "CHAI AT 2AM"];
