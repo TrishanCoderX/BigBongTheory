@@ -1,0 +1,153 @@
+// Prisma schema for the BBT ticketing platform's real backend.
+// Postgres-backed (see DATABASE_URL) — required for a real multi-instance
+// production deploy; local dev also runs against Postgres to keep dev and
+// prod on identical database behavior.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum StaffRole {
+  STAFF
+  MODERATOR
+  SUPER_ADMIN
+}
+
+enum TierId {
+  EARLY
+  REGULAR
+  VIP
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String
+  email         String         @unique
+  emailVerified DateTime?
+  image         String?
+  // Null for accounts created via an OAuth provider (e.g. Google) only.
+  passwordHash  String?
+  createdAt     DateTime       @default(now())
+  accounts      Account[]
+  sessions      Session[]
+  registrations Registration[]
+}
+
+// The following three models are the shape required by @auth/prisma-adapter
+// (Auth.js) for Google OAuth sign-in. Session storage isn't actually used at
+// runtime since we use the "jwt" session strategy (required alongside the
+// Credentials/email+password provider) — Account still is, to link a Google
+// identity to a User row.
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model StaffAccount {
+  id           String   @id @default(cuid())
+  staffId      String   @unique
+  name         String
+  passcodeHash String
+  role         StaffRole @default(STAFF)
+  createdAt    DateTime @default(now())
+
+  checkIns Registration[] @relation("CheckedInBy")
+}
+
+model Event {
+  slug          String         @id
+  name          String
+  city          String
+  date          String
+  cat           String
+  tint          String
+  time          String
+  venue         String
+  price         Int
+  ticketsLabel  String
+  status        String         @default("LIVE")
+  capacity      Int            @default(400)
+  description   String         @default("")
+  image         String         @default("")
+  createdAt     DateTime       @default(now())
+  registrations Registration[]
+}
+
+model Tier {
+  id    TierId @id
+  label String
+  price Int
+  note  String
+  left  Int
+}
+
+model Registration {
+  id           String    @id @default(cuid())
+  ticketId     String    @unique
+  event        Event     @relation(fields: [eventSlug], references: [slug])
+  eventSlug    String
+  tier         TierId
+  name         String
+  email        String
+  phone        String
+  qty          Int       @default(1)
+  amount       Int
+  checkedIn    Boolean   @default(false)
+  checkedInAt  DateTime?
+  checkedInBy  StaffAccount? @relation("CheckedInBy", fields: [checkedInById], references: [id], onDelete: SetNull)
+  checkedInById String?
+  user         User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId       String?
+  createdAt    DateTime  @default(now())
+
+  @@index([eventSlug])
+  @@index([checkedIn])
+}
+
+model JoinApplication {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  city      String   @default("")
+  handle    String   @default("")
+  idea      String
+  tags      String   @default("")
+  status    String   @default("NEW")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

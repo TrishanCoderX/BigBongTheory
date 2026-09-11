@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="BBT Turf Day — cricket, football and fun games on the turf">
+  <defs>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#CBF23F" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#CBF23F" stop-opacity="0" />
+    </linearGradient>
+    <radialGradient id="lamp" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FDFBF4" stop-opacity="1" />
+      <stop offset="45%" stop-color="#CBF23F" stop-opacity="0.65" />
+      <stop offset="100%" stop-color="#CBF23F" stop-opacity="0" />
+    </radialGradient>
+    <pattern id="diag" width="12" height="12" patternTransform="rotate(112)" patternUnits="userSpaceOnUse">
+      <rect width="12" height="12" fill="transparent" />
+      <line x1="0" y1="0" x2="0" y2="12" stroke="#F3F0E7" stroke-opacity="0.05" stroke-width="2" />
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="#0B140C" />
+
+  <g>
+    <rect x="0" y="0" width="145.5" height="900" fill="#122413" />
+    <rect x="145.5" y="0" width="145.5" height="900" fill="#0E1C10" />
+    <rect x="291" y="0" width="145.5" height="900" fill="#122413" />
+    <rect x="436.5" y="0" width="145.5" height="900" fill="#0E1C10" />
+    <rect x="582" y="0" width="145.5" height="900" fill="#122413" />
+    <rect x="727.5" y="0" width="145.5" height="900" fill="#0E1C10" />
+    <rect x="873" y="0" width="145.5" height="900" fill="#122413" />
+    <rect x="1018.5" y="0" width="145.5" height="900" fill="#0E1C10" />
+    <rect x="1164" y="0" width="145.5" height="900" fill="#122413" />
+    <rect x="1309.5" y="0" width="145.5" height="900" fill="#0E1C10" />
+    <rect x="1455" y="0" width="145" height="900" fill="#122413" />
+  </g>
+
+  <rect width="1600" height="900" fill="url(#diag)" />
+
+  <g stroke="#F3F0E7" stroke-opacity="0.4" fill="none" stroke-width="3">
+    <rect x="40" y="40" width="1520" height="820" />
+    <line x1="800" y1="40" x2="800" y2="860" />
+    <circle cx="800" cy="450" r="115" />
+    <circle cx="800" cy="450" r="5" fill="#F3F0E7" fill-opacity="0.4" stroke="none" />
+    <rect x="40" y="255" width="220" height="390" />
+    <rect x="40" y="345" width="90" height="210" />
+    <path d="M 260 345 A 115 115 0 0 1 260 555" />
+    <rect x="1340" y="255" width="220" height="390" />
+    <rect x="1470" y="345" width="90" height="210" />
+    <path d="M 1340 345 A 115 115 0 0 0 1340 555" />
+  </g>
+
+  <g opacity="0.92">
+    <rect x="700" y="360" width="200" height="180" fill="#C9A876" opacity="0.85" />
+    <rect x="700" y="360" width="200" height="180" fill="none" stroke="#3D2E14" stroke-opacity="0.4" stroke-width="2" />
+    <g stroke="#1B1B22" stroke-width="5" stroke-linecap="round">
+      <line x1="726" y1="368" x2="726" y2="398" />
+      <line x1="738" y1="368" x2="738" y2="398" />
+      <line x1="750" y1="368" x2="750" y2="398" />
+      <line x1="850" y1="502" x2="850" y2="532" />
+      <line x1="862" y1="502" x2="862" y2="532" />
+      <line x1="874" y1="502" x2="874" y2="532" />
+    </g>
+  </g>
+
+  <g fill="#F3F0E7" fill-opacity="0.85">
+    <circle cx="1150" cy="620" r="22" fill="none" stroke="#F3F0E7" stroke-opacity="0.7" stroke-width="3" />
+    <path d="M1150 601 l6 5 -2 8 -8 0 -2 -8 z" fill="#F3F0E7" fill-opacity="0.7" />
+  </g>
+
+  <g stroke="#CBF23F" stroke-opacity="0.55" stroke-width="4">
+    <line x1="120" y1="850" x2="120" y2="120" />
+    <line x1="1480" y1="850" x2="1480" y2="120" />
+    <line x1="480" y1="850" x2="480" y2="70" />
+    <line x1="1120" y1="850" x2="1120" y2="70" />
+  </g>
+  <g>
+    <rect x="70" y="95" width="100" height="34" fill="#0B140C" stroke="#CBF23F" stroke-opacity="0.55" stroke-width="3" />
+    <rect x="430" y="45" width="100" height="34" fill="#0B140C" stroke="#CBF23F" stroke-opacity="0.55" stroke-width="3" />
+    <rect x="1070" y="45" width="100" height="34" fill="#0B140C" stroke="#CBF23F" stroke-opacity="0.55" stroke-width="3" />
+    <rect x="1430" y="95" width="100" height="34" fill="#0B140C" stroke="#CBF23F" stroke-opacity="0.55" stroke-width="3" />
+  </g>
+  <g opacity="0.9">
+    <circle cx="120" cy="112" r="70" fill="url(#lamp)" />
+    <circle cx="480" cy="62" r="70" fill="url(#lamp)" />
+    <circle cx="1120" cy="62" r="70" fill="url(#lamp)" />
+    <circle cx="1480" cy="112" r="70" fill="url(#lamp)" />
+  </g>
+
+  <g opacity="0.5">
+    <circle cx="800" cy="450" r="14" fill="#CBF23F" fill-opacity="0.5" />
+  </g>
+</svg>
