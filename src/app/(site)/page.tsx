@@ -208,7 +208,7 @@ export default function HomePage() {
             >
               {m.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={m.image} alt={m.name} className="absolute inset-0 w-full h-full object-cover" />
+                <img src={m.image} alt={m.name} className="absolute inset-0 w-full h-full object-cover object-top" />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center font-mono text-[10px] tracking-[0.16em] uppercase text-cream/30 text-center p-3">
                   [ MEMBER PORTRAIT ]
