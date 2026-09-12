@@ -76,8 +76,8 @@ export const crew: CrewMember[] = [
   { name: "ANIRUDDHA GHOSH", image: "/crew/aniruddha-ghosh.jpg" },
   { name: "SUSMRITI CHOWDHURY", image: "/crew/susmriti-chowdhury.jpg" },
   { name: "SAPTARSHI SAMANTA", image: "/crew/saptarshi-samanta.png" },
-  { name: "ANNWESHA ADHIKARI", image: "/crew/annwesha-adhikari.jpg" },
-  { name: "SREYASI", image: "/crew/sreyasi.png" },
+  { name: "ANNWESHA ADHIKARI", image: "/crew/annwesha-adhikari.jpg", imagePosition: "50% 60%" },
+  { name: "SREYASI", image: "/crew/sreyasi.png", imagePosition: "50% 60%" },
   { name: "ATIM GHOSH", image: "/crew/atim-ghosh.jpg" },
   { name: "SUNNY GHOSH", image: "/crew/sunny-ghosh.jpg" },
 ];
