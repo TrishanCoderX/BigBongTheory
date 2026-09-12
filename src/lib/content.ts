@@ -74,6 +74,12 @@ export const crew: CrewMember[] = [
   { name: "RAJDEEP RUDRA", image: "/crew/rajdeep-rudra.jpg" },
   { name: "ATIG CHANDRA", image: "/crew/atig-chandra.jpg" },
   { name: "ANIRUDDHA GHOSH", image: "/crew/aniruddha-ghosh.jpg" },
+  { name: "SUSMRITI CHOWDHURY", image: "/crew/susmriti-chowdhury.jpg" },
+  { name: "SAPTARSHI SAMANTA", image: "/crew/saptarshi-samanta.png" },
+  { name: "ANNWESHA ADHIKARI", image: "/crew/annwesha-adhikari.jpg" },
+  { name: "SREYASI", image: "/crew/sreyasi.png" },
+  { name: "ATIM GHOSH", image: "/crew/atim-ghosh.jpg" },
+  { name: "SUNNY GHOSH", image: "/crew/sunny-ghosh.jpg" },
 ];
 
 export const expect = ["LIVE SETS", "OPEN MIC", "SHORT FILMS", "JAM CORNER", "ZINE TABLE", "CHAI AT 2AM"];
