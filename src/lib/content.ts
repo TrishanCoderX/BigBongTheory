@@ -58,7 +58,7 @@ export const galleryExtra: GalleryFrame[] = [
   { tag: "EVENTS", caption: "FIRST COMMUNITY MEET, ONE MORE FOR THE ROOM", cols: 2, rows: 2, img: "/gallery/community-meet-group2.jpg" },
 ];
 
-type CrewMember = { name: string; role?: string; image?: string };
+type CrewMember = { name: string; role?: string; image?: string; imagePosition?: string };
 
 export const crew: CrewMember[] = [
   { name: "RIYA", role: "FILMMAKER" },
@@ -71,7 +71,7 @@ export const crew: CrewMember[] = [
   { name: "JOY", role: "EVENT FREAK" },
   { name: "ANI", role: "DANGEROUS IDEAS" },
   { name: "PIU", role: "MARKETER" },
-  { name: "RAJDEEP RUDRA", image: "/crew/rajdeep-rudra.jpg" },
+  { name: "RAJDEEP RUDRA", image: "/crew/rajdeep-rudra.jpg", imagePosition: "50% 65%" },
   { name: "ATIG CHANDRA", image: "/crew/atig-chandra.jpg" },
   { name: "ANIRUDDHA GHOSH", image: "/crew/aniruddha-ghosh.jpg" },
   { name: "SUSMRITI CHOWDHURY", image: "/crew/susmriti-chowdhury.jpg" },
