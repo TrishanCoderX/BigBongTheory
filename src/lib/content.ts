@@ -61,16 +61,6 @@ export const galleryExtra: GalleryFrame[] = [
 type CrewMember = { name: string; role?: string; image?: string; imagePosition?: string };
 
 export const crew: CrewMember[] = [
-  { name: "RIYA", role: "FILMMAKER" },
-  { name: "ARKO", role: "MUSICIAN" },
-  { name: "DEB", role: "PHOTOGRAPHER" },
-  { name: "NEEL", role: "PERFORMER" },
-  { name: "TUHIN", role: "DESIGNER" },
-  { name: "MOU", role: "CREATOR" },
-  { name: "SAM", role: "VIDEOGRAPHER" },
-  { name: "JOY", role: "EVENT FREAK" },
-  { name: "ANI", role: "DANGEROUS IDEAS" },
-  { name: "PIU", role: "MARKETER" },
   { name: "RAJDEEP RUDRA", image: "/crew/rajdeep-rudra.jpg", imagePosition: "50% 65%" },
   { name: "ATIG CHANDRA", image: "/crew/atig-chandra.jpg" },
   { name: "ANIRUDDHA GHOSH", image: "/crew/aniruddha-ghosh.jpg" },
