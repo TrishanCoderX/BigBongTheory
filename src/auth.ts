@@ -41,12 +41,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) token.id = user.id;
+      // `account` is only present on the initial sign-in call, not on
+      // subsequent JWT refreshes — persist the provider onto the token so
+      // it survives for the life of the session.
+      if (account) token.provider = account.provider;
       return token;
     },
     async session({ session, token }) {
       if (session.user && token.id) session.user.id = token.id as string;
+      if (session.user && token.provider) session.user.provider = token.provider as string;
       return session;
     },
   },

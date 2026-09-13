@@ -12,6 +12,14 @@ function generateTicketId(tier: string) {
 }
 
 export async function POST(request: Request) {
+  const session = await auth();
+  // Booking requires a Google sign-in specifically — enforced here too (not
+  // just in the /book page UI) since this is the endpoint that actually
+  // creates a ticket; the UI gate alone wouldn't stop a direct API call.
+  if (!session?.user || session.user.provider !== "google") {
+    return Response.json({ error: "Sign in with Google to book a ticket." }, { status: 401 });
+  }
+
   const body = await request.json().catch(() => null);
   const eventSlug = String(body?.eventSlug ?? "");
   const tierRaw = String(body?.tier ?? "").toUpperCase();
@@ -45,10 +53,13 @@ export async function POST(request: Request) {
   const qty = isFree ? 1 : qtyRaw;
 
   if (isFree) {
-    const existing = await prisma.registration.findFirst({ where: { eventSlug, email } });
+    // Keyed on the authenticated Google account, not the typed-in email —
+    // otherwise the same person could re-enter a different email each time
+    // and claim multiple spots on a capacity-limited free event.
+    const existing = await prisma.registration.findFirst({ where: { eventSlug, userId: session.user.id } });
     if (existing) {
       return Response.json(
-        { error: "You've already claimed a spot for this event with this email." },
+        { error: "You've already claimed a spot for this event with this account." },
         { status: 409 },
       );
     }
@@ -69,7 +80,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const session = await auth();
   // Free events (price 0) are free regardless of which tier a user picks —
   // tiers are global pricing tiers shared across all events, so this keeps
   // a $0 event actually free instead of charging a tier's list price.
@@ -89,7 +99,7 @@ export async function POST(request: Request) {
           phone,
           qty,
           amount,
-          userId: session?.user?.id ?? null,
+          userId: session.user.id,
         },
       });
     } catch (err) {
