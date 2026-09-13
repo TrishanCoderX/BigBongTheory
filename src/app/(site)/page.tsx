@@ -308,8 +308,17 @@ export default function HomePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
           {team.map((t, i) => (
             <Reveal key={t.name} className="border border-cream/[0.16] bg-[#0B0B11] transition-[transform,border-color] duration-[400ms] hover:-translate-y-2 hover:border-lime">
-              <div className="relative aspect-[4/5] bg-[#14141A] bg-[repeating-linear-gradient(var(--angle),rgba(243,240,231,0.12)_0_2px,transparent_2px_10px)] flex items-center justify-center" style={{ ["--angle" as string]: `${104 + i * 21}deg` }}>
-                <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-cream/35">[ PORTRAIT ]</span>
+              <div className="relative aspect-[4/5] bg-[#14141A] bg-[repeating-linear-gradient(var(--angle),rgba(243,240,231,0.12)_0_2px,transparent_2px_10px)] flex items-center justify-center overflow-hidden" style={{ ["--angle" as string]: `${104 + i * 21}deg` }}>
+                {t.image ? (
+                  <img
+                    src={t.image}
+                    alt={t.name}
+                    className="absolute inset-0 w-full h-full object-cover object-top"
+                    style={t.imagePosition ? { objectPosition: t.imagePosition } : undefined}
+                  />
+                ) : (
+                  <span className="font-mono text-[10px] tracking-[0.16em] uppercase text-cream/35">[ PORTRAIT ]</span>
+                )}
                 <span className="absolute top-3 left-3 font-mono text-[9px] tracking-[0.2em] text-lime">{`0${i + 1}`}</span>
               </div>
               <div className="p-4.5">

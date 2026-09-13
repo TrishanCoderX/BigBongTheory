@@ -11,14 +11,14 @@ export const pastEvents = [
   { slug: "first-noise", name: "FIRST NOISE", city: "KOLKATA", date: "MAR 2026", cat: "MUSIC" },
 ];
 
-type TeamMember = { name: string; role?: string; line?: string };
+type TeamMember = { name: string; role?: string; line?: string; image?: string; imagePosition?: string };
 
 export const team: TeamMember[] = [
-  { name: "SPANDAN SARKAR" },
-  { name: "ZUNAID HUSSAIN" },
-  { name: "TRISHAN MANNA" },
-  { name: "ATIG CHANDRA" },
-  { name: "SUNNY GHOSH" },
+  { name: "SPANDAN SARKAR", image: "/crew/spandan-sarkar.jpg" },
+  { name: "ZUNAID HUSSAIN", image: "/crew/zunaid-hussain.jpg" },
+  { name: "TRISHAN MANNA", image: "/crew/trishan-manna.jpg" },
+  { name: "ATIG CHANDRA", image: "/crew/atig-chandra.jpg" },
+  { name: "SUNNY GHOSH", image: "/crew/sunny-ghosh.jpg" },
 ];
 
 export const tribes = [
