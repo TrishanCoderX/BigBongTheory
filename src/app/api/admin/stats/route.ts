@@ -6,11 +6,12 @@ export async function GET() {
   if ("error" in gate) return gate.error;
   const { session } = gate;
 
-  const [events, tiers, registrations, totalApplications] = await Promise.all([
+  const [events, tiers, registrations, totalApplications, totalSponsorApplications] = await Promise.all([
     prisma.event.findMany({ orderBy: { createdAt: "asc" } }),
     prisma.tier.findMany(),
     prisma.registration.findMany(),
     prisma.joinApplication.count(),
+    prisma.sponsorApplication.count(),
   ]);
 
   const ticketsSold = registrations.reduce((sum, r) => sum + r.qty, 0);
@@ -54,6 +55,7 @@ export async function GET() {
     byTier,
     last7Days,
     totalApplications,
+    totalSponsorApplications,
   };
 
   if (staffRoleAtLeast(session.role, "SUPER_ADMIN")) {

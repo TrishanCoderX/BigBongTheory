@@ -366,7 +366,7 @@ export default function HomePage() {
             WANT YOUR BRAND IN FRONT OF 2,000+ YOUNG CREATORS?
           </div>
           <Link
-            href="/join"
+            href="/sponsor"
             data-mag="1"
             className="px-7.5 py-5 border border-lime text-lime font-mono text-xs tracking-[0.16em] uppercase cursor-pointer min-h-[48px] inline-flex items-center transition-colors hover:bg-lime hover:text-background"
           >

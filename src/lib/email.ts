@@ -159,3 +159,59 @@ export async function sendJoinConfirmation(input: JoinConfirmationInput): Promis
     console.error("[email] Failed to send join confirmation:", err);
   }
 }
+
+interface SponsorConfirmationInput {
+  to: string;
+  brandName: string;
+  contactName: string;
+}
+
+function sponsorConfirmationHtml(raw: SponsorConfirmationInput): string {
+  const brandName = escapeHtml(raw.brandName);
+  const contactName = escapeHtml(raw.contactName);
+  return `
+  <div style="background:#08080B;padding:40px 20px;font-family:Arial,Helvetica,sans-serif;">
+    <div style="max-width:480px;margin:0 auto;background:#F3F0E7;color:#08080B;">
+      <div style="background:#08080B;color:#CBF23F;padding:20px 28px;font-size:11px;letter-spacing:2px;text-transform:uppercase;">
+        Big Bong Theory &mdash; Sponsorship Inquiry
+      </div>
+      <div style="padding:28px;">
+        <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#FF4D2E;margin-bottom:8px;">
+          Inquiry received
+        </div>
+        <h1 style="font-size:28px;text-transform:uppercase;margin:0 0 20px;line-height:1.1;">
+          On the wall soon.
+        </h1>
+        <p style="font-size:15px;line-height:1.6;margin:0 0 8px;">
+          Hey ${contactName}, we&rsquo;ve got ${brandName}&rsquo;s sponsorship inquiry. Someone from BBT
+          will reach out within a few days to talk details.
+        </p>
+      </div>
+    </div>
+  </div>`;
+}
+
+/**
+ * Best-effort sponsor-inquiry confirmation email — never throws, mirrors
+ * sendJoinConfirmation. The inquiry is considered received once the
+ * database row exists; this is a nice-to-have on top.
+ */
+export async function sendSponsorConfirmation(input: SponsorConfirmationInput): Promise<void> {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.warn("[email] RESEND_API_KEY not set — skipping sponsor confirmation email.");
+    return;
+  }
+
+  try {
+    const resend = new Resend(apiKey);
+    await resend.emails.send({
+      from: process.env.EMAIL_FROM || "Big Bong Theory <onboarding@resend.dev>",
+      to: input.to,
+      subject: "We got your sponsorship inquiry — Big Bong Theory",
+      html: sponsorConfirmationHtml(input),
+    });
+  } catch (err) {
+    console.error("[email] Failed to send sponsor confirmation:", err);
+  }
+}

@@ -187,6 +187,15 @@ export const joinTags = [
 
 export const menuTicker = ["CREATE", "PERFORM", "BUILD", "EXPERIMENT", "MAKE SOME NOISE"];
 
+export const sponsorInterests = [
+  "TITLE SPONSOR",
+  "CO-SPONSOR",
+  "VENUE PARTNER",
+  "MERCH PARTNER",
+  "MEDIA PARTNER",
+  "IN-KIND / BARTER",
+];
+
 export const navItems = [
   { label: "HOME", href: "/", hint: "THE CHAOS" },
   { label: "EVENTS", href: "/events", hint: "WHAT’S NEXT" },

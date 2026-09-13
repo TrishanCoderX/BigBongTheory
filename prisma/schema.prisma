@@ -151,3 +151,18 @@ model JoinApplication {
 
   @@index([createdAt])
 }
+
+model SponsorApplication {
+  id          String   @id @default(cuid())
+  brandName   String
+  contactName String
+  email       String
+  phone       String   @default("")
+  website     String   @default("")
+  interests   String   @default("")
+  message     String
+  status      String   @default("NEW")
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+}

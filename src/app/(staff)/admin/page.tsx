@@ -39,6 +39,7 @@ interface Stats {
   byTier: TierStat[];
   last7Days: DayStat[];
   totalApplications: number;
+  totalSponsorApplications: number;
   revenue?: number;
 }
 
@@ -61,6 +62,19 @@ interface ApplicationRow {
   createdAt: string;
 }
 
+interface SponsorApplicationRow {
+  id: string;
+  brandName: string;
+  contactName: string;
+  email: string;
+  phone: string;
+  website: string;
+  interests: string[];
+  message: string;
+  status: string;
+  createdAt: string;
+}
+
 const POLL_MS = 5000;
 
 export default function AdminPage() {
@@ -68,6 +82,7 @@ export default function AdminPage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [rows, setRows] = useState<RegistrationRow[]>([]);
   const [applications, setApplications] = useState<ApplicationRow[]>([]);
+  const [sponsorApplications, setSponsorApplications] = useState<SponsorApplicationRow[]>([]);
   const [query, setQuery] = useState("");
   const [showNewEvent, setShowNewEvent] = useState(false);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
@@ -101,12 +116,19 @@ export default function AdminPage() {
       .then((data) => setApplications(data?.applications ?? []));
   }, []);
 
+  const refreshSponsorApplications = useCallback(() => {
+    fetch("/api/admin/sponsor-applications")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setSponsorApplications(data?.applications ?? []));
+  }, []);
+
   useEffect(() => {
     if (!can("MODERATOR")) return;
     refreshStats();
     refreshRows("");
     refreshApplications();
-  }, [can, refreshStats, refreshRows, refreshApplications]);
+    refreshSponsorApplications();
+  }, [can, refreshStats, refreshRows, refreshApplications, refreshSponsorApplications]);
 
   useEffect(() => {
     if (!can("MODERATOR")) return;
@@ -125,9 +147,10 @@ export default function AdminPage() {
       refreshStats();
       refreshRows(queryRef.current);
       refreshApplications();
+      refreshSponsorApplications();
     }, POLL_MS);
     return () => clearInterval(interval);
-  }, [can, refreshStats, refreshRows, refreshApplications]);
+  }, [can, refreshStats, refreshRows, refreshApplications, refreshSponsorApplications]);
 
   const undo = async (ticketId: string) => {
     const res = await fetch("/api/checkin/undo", {
@@ -167,6 +190,7 @@ export default function AdminPage() {
     { k: "TOTAL ATTENDEES", v: stats.totalAttendees.toLocaleString("en-IN"), d: `${stats.ticketsSold} TICKETS SOLD` },
     { k: "CHECKED IN", v: `${stats.checkedInCount}`, d: `${stats.checkedInPct}% OF ATTENDEES` },
     { k: "APPLICATIONS", v: String(stats.totalApplications), d: "JOIN BBT SUBMISSIONS" },
+    { k: "SPONSOR INQUIRIES", v: String(stats.totalSponsorApplications), d: "SPONSORSHIP SUBMISSIONS" },
     {
       k: "REVENUE",
       v: stats.revenue !== undefined ? `₹${stats.revenue.toLocaleString("en-IN")}` : "",
@@ -243,7 +267,7 @@ export default function AdminPage() {
           />
         )}
 
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-3.5 mt-6.5">
+        <div className="grid grid-cols-2 lg:grid-cols-6 gap-3.5 mt-6.5">
           {statCards.map((s) =>
             s.hide ? (
               <div key={s.k} className="bg-white border border-[#14141A]/[0.12] p-5.5 flex flex-col justify-center">
@@ -378,6 +402,42 @@ export default function AdminPage() {
           ))}
           {applications.length === 0 && (
             <div className="p-6 font-mono text-xs text-[#14141A]/45 text-center">NO APPLICATIONS YET.</div>
+          )}
+        </div>
+
+        <div className="bg-white border border-[#14141A]/[0.12] mt-3.5">
+          <div className="p-4.5 border-b border-[#14141A]/[0.12] font-mono text-[11px] tracking-[0.18em] uppercase">
+            SPONSOR INQUIRIES
+          </div>
+          {sponsorApplications.map((a) => (
+            <div key={a.id} className="px-5 py-4 border-b border-[#14141A]/[0.08]">
+              <div className="flex justify-between items-start gap-3 flex-wrap">
+                <div>
+                  <div className="font-semibold text-sm">{a.brandName}</div>
+                  <div className="font-mono text-[10px] text-[#14141A]/50 mt-0.5">
+                    {a.contactName} / {a.email}
+                    {a.phone && ` / ${a.phone}`}
+                    {a.website && ` / ${a.website}`}
+                  </div>
+                </div>
+                <div className="font-mono text-[9px] text-[#14141A]/40">
+                  {new Date(a.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short" })}
+                </div>
+              </div>
+              {a.interests.length > 0 && (
+                <div className="flex gap-1.5 flex-wrap mt-2">
+                  {a.interests.map((t) => (
+                    <span key={t} className="px-1.5 py-0.5 bg-[#14141A]/[0.06] font-mono text-[9px] tracking-[0.08em] uppercase text-[#14141A]/60">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <div className="text-sm text-[#14141A]/75 mt-2 leading-relaxed">{a.message}</div>
+            </div>
+          ))}
+          {sponsorApplications.length === 0 && (
+            <div className="p-6 font-mono text-xs text-[#14141A]/45 text-center">NO SPONSOR INQUIRIES YET.</div>
           )}
         </div>
 
