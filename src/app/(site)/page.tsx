@@ -314,8 +314,8 @@ export default function HomePage() {
               </div>
               <div className="p-4.5">
                 <div className="font-display text-[30px] leading-[0.94] uppercase">{t.name}</div>
-                <div className="font-mono text-[10px] tracking-[0.18em] uppercase text-lime mt-2">{t.role}</div>
-                <div className="text-[14px] leading-[1.55] text-cream/55 mt-3">{t.line}</div>
+                {t.role && <div className="font-mono text-[10px] tracking-[0.18em] uppercase text-lime mt-2">{t.role}</div>}
+                {t.line && <div className="text-[14px] leading-[1.55] text-cream/55 mt-3">{t.line}</div>}
               </div>
             </Reveal>
           ))}

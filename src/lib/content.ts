@@ -11,12 +11,14 @@ export const pastEvents = [
   { slug: "first-noise", name: "FIRST NOISE", city: "KOLKATA", date: "MAR 2026", cat: "MUSIC" },
 ];
 
-export const team = [
-  { name: "ARKO DUTTA", role: "FOUNDER / CHAOS DIRECTOR", line: "Started BBT on a rooftop with two speakers and no permission." },
-  { name: "RIYA SEN", role: "FILM & CONTENT", line: "Shoots everything. Deletes nothing. Edits at 4 AM." },
-  { name: "DEBJYOTI M.", role: "EVENTS & PRODUCTION", line: "Knows every venue owner in the city, somehow." },
-  { name: "MOU BANERJEE", role: "COMMUNITY", line: "Remembers your name and what you were building." },
-  { name: "TUHIN ROY", role: "DESIGN & IDENTITY", line: "Responsible for every poster you screenshotted." },
+type TeamMember = { name: string; role?: string; line?: string };
+
+export const team: TeamMember[] = [
+  { name: "SPANDAN SARKAR" },
+  { name: "ZUNAID HUSSAIN" },
+  { name: "TRISHAN MANNA" },
+  { name: "ATIG CHANDRA" },
+  { name: "SUNNY GHOSH" },
 ];
 
 export const tribes = [
@@ -62,14 +64,12 @@ type CrewMember = { name: string; role?: string; image?: string; imagePosition?:
 
 export const crew: CrewMember[] = [
   { name: "RAJDEEP RUDRA", image: "/crew/rajdeep-rudra.jpg", imagePosition: "50% 65%" },
-  { name: "ATIG CHANDRA", image: "/crew/atig-chandra.jpg" },
   { name: "ANIRUDDHA GHOSH", image: "/crew/aniruddha-ghosh.jpg" },
   { name: "SUSMRITI CHOWDHURY", image: "/crew/susmriti-chowdhury.jpg" },
   { name: "SAPTARSHI SAMANTA", image: "/crew/saptarshi-samanta.png" },
   { name: "ANNWESHA ADHIKARI", image: "/crew/annwesha-adhikari.jpg", imagePosition: "50% 60%" },
   { name: "SREYASI", image: "/crew/sreyasi.png", imagePosition: "50% 60%" },
   { name: "ATIM GHOSH", image: "/crew/atim-ghosh.jpg" },
-  { name: "SUNNY GHOSH", image: "/crew/sunny-ghosh.jpg" },
   { name: "TAMAJIT NAYEK", image: "/crew/tamajit-nayek.jpg" },
 ];
 
