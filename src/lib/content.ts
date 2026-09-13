@@ -130,6 +130,7 @@ export const crew: CrewMember[] = [
     name: "Shaili Shaw",
     role: "Head of PR",
     line: "Turning events, ideas, and questionable decisions into something worth talking about.",
+    image: "/crew/shaili-shaw.jpg",
   },
   {
     name: "Atim",
