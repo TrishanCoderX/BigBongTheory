@@ -14,11 +14,36 @@ export const pastEvents = [
 type TeamMember = { name: string; role?: string; line?: string; image?: string; imagePosition?: string };
 
 export const team: TeamMember[] = [
-  { name: "SPANDAN SARKAR", image: "/crew/spandan-sarkar.jpg" },
-  { name: "ZUNAID HUSSAIN", image: "/crew/zunaid-hussain.jpg" },
-  { name: "TRISHAN MANNA", image: "/crew/trishan-manna.jpg" },
-  { name: "ATIG CHANDRA", image: "/crew/atig-chandra.jpg" },
-  { name: "SUNNY GHOSH", image: "/crew/sunny-ghosh.jpg" },
+  {
+    name: "Spandan",
+    role: "Founder & CEO",
+    line: "Started BBT with an idea. Now has the questionable responsibility of making it actually work.",
+    image: "/crew/spandan-sarkar.jpg",
+  },
+  {
+    name: "Zunaid",
+    role: "CBO / COO",
+    line: "Turns “bhai, kuch karte hain” into actual plans. Unfortunately, people expect him to execute them too.",
+    image: "/crew/zunaid-hussain.jpg",
+  },
+  {
+    name: "Trishan",
+    role: "VP, Partnerships & Collaborations",
+    line: "Professional connector of dots, people, brands, and occasionally completely unrelated ideas.",
+    image: "/crew/trishan-manna.jpg",
+  },
+  {
+    name: "Atig",
+    role: "VP, Community Growth & Development",
+    line: "Growing the community one human at a time. Basically collecting people, but professionally.",
+    image: "/crew/atig-chandra.jpg",
+  },
+  {
+    name: "Sunny",
+    role: "Head of Creatives",
+    line: "Makes things look cool while the rest of us try to explain what the idea was supposed to be.",
+    image: "/crew/sunny-ghosh.jpg",
+  },
 ];
 
 export const tribes = [
@@ -60,17 +85,70 @@ export const galleryExtra: GalleryFrame[] = [
   { tag: "EVENTS", caption: "FIRST COMMUNITY MEET, ONE MORE FOR THE ROOM", cols: 2, rows: 2, img: "/gallery/community-meet-group2.jpg" },
 ];
 
-type CrewMember = { name: string; role?: string; image?: string; imagePosition?: string };
+type CrewMember = { name: string; role?: string; line?: string; image?: string; imagePosition?: string };
 
 export const crew: CrewMember[] = [
-  { name: "RAJDEEP RUDRA", image: "/crew/rajdeep-rudra.jpg", imagePosition: "50% 65%" },
-  { name: "ANIRUDDHA GHOSH", image: "/crew/aniruddha-ghosh.jpg" },
-  { name: "SUSMRITI CHOWDHURY", image: "/crew/susmriti-chowdhury.jpg" },
-  { name: "SAPTARSHI SAMANTA", image: "/crew/saptarshi-samanta.png" },
-  { name: "ANNWESHA ADHIKARI", image: "/crew/annwesha-adhikari.jpg", imagePosition: "50% 60%" },
-  { name: "SREYASI", image: "/crew/sreyasi.png", imagePosition: "50% 60%" },
-  { name: "ATIM GHOSH", image: "/crew/atim-ghosh.jpg" },
-  { name: "TAMAJIT NAYEK", image: "/crew/tamajit-nayek.jpg" },
+  {
+    name: "Aniruddha",
+    role: "Head of Talent Acquisition",
+    line: "Finding hidden talent like it’s a treasure hunt. Except the treasure has a CV.",
+    image: "/crew/aniruddha-ghosh.jpg",
+  },
+  {
+    name: "Sreyasi",
+    role: "Head of Talent Acquisition",
+    line: "On a never-ending mission to find people who are talented, creative, and willing to join this madness.",
+    image: "/crew/sreyasi.png",
+    imagePosition: "50% 60%",
+  },
+  {
+    name: "Saptarshi",
+    role: "General Manager, Finance",
+    line: "The only person allowed to ask, “But what’s the budget?” while everyone else is busy dreaming.",
+    image: "/crew/saptarshi-samanta.png",
+  },
+  {
+    name: "Rajdeep",
+    role: "General Manager, Logistics — Bangalore",
+    line: "Making sure the Bangalore chaos reaches the right place, at the right time, with minimal disasters.",
+    image: "/crew/rajdeep-rudra.jpg",
+    imagePosition: "50% 65%",
+  },
+  {
+    name: "Arkaprabha",
+    role: "General Manager, Logistics — Kolkata",
+    line: "Because apparently, “we’ll figure it out on the day” is not considered a logistics strategy.",
+  },
+  {
+    name: "Annwesha",
+    role: "Head of PR",
+    line: "Making BBT look organised, even when the group chat says otherwise.",
+    image: "/crew/annwesha-adhikari.jpg",
+    imagePosition: "50% 60%",
+  },
+  {
+    name: "Shaili Shaw",
+    role: "Head of PR",
+    line: "Turning events, ideas, and questionable decisions into something worth talking about.",
+  },
+  {
+    name: "Atim",
+    role: "Head of Influencer Relations",
+    line: "Knows people who know people. Basically LinkedIn, but with better vibes.",
+    image: "/crew/atim-ghosh.jpg",
+  },
+  {
+    name: "Susmriti",
+    role: "Head of Influencer Relations",
+    line: "Connecting BBT with creators, influencers, and people who can make the internet pay attention.",
+    image: "/crew/susmriti-chowdhury.jpg",
+  },
+  {
+    name: "Tamajit",
+    role: "Head of Creatives & Content",
+    line: "Turns random ideas into content and somehow makes the chaos look intentional.",
+    image: "/crew/tamajit-nayek.jpg",
+  },
 ];
 
 export const expect = ["LIVE SETS", "OPEN MIC", "SHORT FILMS", "JAM CORNER", "ZINE TABLE", "CHAI AT 2AM"];

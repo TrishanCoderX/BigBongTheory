@@ -219,10 +219,13 @@ export default function HomePage() {
                   [ MEMBER PORTRAIT ]
                 </div>
               )}
-              <div className="absolute inset-0 bg-lime text-background flex flex-col justify-end p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <div className="absolute inset-0 bg-lime text-background flex flex-col justify-end p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100 overflow-y-auto">
                 <div className="font-display text-2xl leading-[0.94] uppercase">{m.name}</div>
                 {m.role && (
                   <div className="font-mono text-[10px] tracking-[0.16em] uppercase mt-1.5">{m.role}</div>
+                )}
+                {m.line && (
+                  <div className="text-[11px] leading-[1.45] mt-2 opacity-80">{m.line}</div>
                 )}
               </div>
             </Reveal>
