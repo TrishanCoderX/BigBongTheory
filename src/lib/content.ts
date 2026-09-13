@@ -70,6 +70,7 @@ export const crew: CrewMember[] = [
   { name: "SREYASI", image: "/crew/sreyasi.png", imagePosition: "50% 60%" },
   { name: "ATIM GHOSH", image: "/crew/atim-ghosh.jpg" },
   { name: "SUNNY GHOSH", image: "/crew/sunny-ghosh.jpg" },
+  { name: "TAMAJIT NAYEK", image: "/crew/tamajit-nayek.jpg" },
 ];
 
 export const expect = ["LIVE SETS", "OPEN MIC", "SHORT FILMS", "JAM CORNER", "ZINE TABLE", "CHAI AT 2AM"];
