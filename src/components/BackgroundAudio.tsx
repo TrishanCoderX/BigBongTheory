@@ -1,12 +1,15 @@
 "use client";
 
-import { useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 
 const STORAGE_KEY = "bbt_audio_on";
 const TRACK_SRC = "/audio/theme.mp3";
 
 function getSnapshot() {
-  return localStorage.getItem(STORAGE_KEY) === "1";
+  // Defaults to on for a first-time visitor (no saved preference yet) —
+  // once they explicitly toggle it, their choice is remembered from then on.
+  const saved = localStorage.getItem(STORAGE_KEY);
+  return saved === null ? true : saved === "1";
 }
 
 function getServerSnapshot() {
@@ -20,11 +23,33 @@ function subscribe(listener: () => void) {
 
 export default function BackgroundAudio() {
   const audioRef = useRef<HTMLAudioElement>(null);
-  // Reflects the user's saved preference, not necessarily real playback —
-  // browsers block audio-with-sound from autoplaying without a fresh
-  // gesture on this page load, so actual playback still waits for the
-  // click below regardless of what was saved last time.
+  // Reflects the user's (or default) preference, not necessarily real
+  // playback — browsers block audio-with-sound from autoplaying without a
+  // fresh gesture on this page load, so actual playback waits for either
+  // the click below or the first-interaction effect underneath it.
   const on = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
+  // Browsers won't let audio-with-sound autoplay on page load, full stop —
+  // there's no code-level way around that. This is the closest honest
+  // approximation of "on by default": the moment the visitor does anything
+  // at all on the page (click, tap, scroll, key press), if the preference
+  // is on and nothing's playing yet, start it right then rather than making
+  // them specifically find and click the sound button.
+  useEffect(() => {
+    if (!on) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const tryStart = () => {
+      if (!audio.paused) return;
+      audio.volume = 0.35;
+      audio.play().catch(() => {});
+    };
+
+    const events: (keyof WindowEventMap)[] = ["pointerdown", "keydown", "scroll", "touchstart"];
+    events.forEach((e) => window.addEventListener(e, tryStart, { once: true, passive: true }));
+    return () => events.forEach((e) => window.removeEventListener(e, tryStart));
+  }, [on]);
 
   const toggle = () => {
     const audio = audioRef.current;
