@@ -32,9 +32,14 @@ export default function BackgroundAudio() {
   // Browsers won't let audio-with-sound autoplay on page load, full stop —
   // there's no code-level way around that. This is the closest honest
   // approximation of "on by default": the moment the visitor does anything
-  // at all on the page (click, tap, scroll, key press), if the preference
-  // is on and nothing's playing yet, start it right then rather than making
-  // them specifically find and click the sound button.
+  // at all on the page, if the preference is on and nothing's playing yet,
+  // start it right then rather than making them specifically find and click
+  // the sound button. Only "click", "keydown", and "touchend" actually count
+  // as a real user-activation gesture in most browsers' autoplay policy —
+  // "pointerdown"/"touchstart" (fires before the gesture completes) and
+  // "scroll" (not a deliberate activation at all) don't reliably unlock
+  // audio in real browsers, even though they can appear to work under
+  // automated/headless testing, which often relaxes this restriction.
   useEffect(() => {
     if (!on) return;
     const audio = audioRef.current;
@@ -46,7 +51,7 @@ export default function BackgroundAudio() {
       audio.play().catch(() => {});
     };
 
-    const events: (keyof WindowEventMap)[] = ["pointerdown", "keydown", "scroll", "touchstart"];
+    const events: (keyof WindowEventMap)[] = ["click", "keydown", "touchend"];
     events.forEach((e) => window.addEventListener(e, tryStart, { once: true, passive: true }));
     return () => events.forEach((e) => window.removeEventListener(e, tryStart));
   }, [on]);
