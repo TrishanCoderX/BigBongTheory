@@ -19,8 +19,28 @@ function clientKey(request: NextRequest): string {
   return forwarded?.split(",")[0]?.trim() || request.headers.get("x-real-ip") || "unknown";
 }
 
+const CANONICAL_HOST = "bigbongtheory.co.in";
+
 export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Force every request onto the one domain AUTH_URL is pinned to. Without
+  // this, someone landing on the old railway.app URL (an old link, a
+  // bookmark) starts the Google OAuth flow there — the PKCE cookie gets set
+  // for that domain, but the callback always lands on bigbongtheory.co.in
+  // (AUTH_URL is fixed), so the browser never sends the cookie back and
+  // Google's token exchange fails with "Invalid code verifier". A 308
+  // preserves the method, so a POST mid-flow (e.g. the sign-in submit)
+  // redirects correctly instead of silently downgrading to a GET.
+  // Only in production — this would otherwise redirect every local dev
+  // request (host is localhost:3000) straight into a loop.
+  if (process.env.RAILWAY_ENVIRONMENT) {
+    const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host");
+    if (host && host !== CANONICAL_HOST && !host.endsWith(".railway.internal")) {
+      const url = new URL(request.nextUrl.pathname + request.nextUrl.search, `https://${CANONICAL_HOST}`);
+      return NextResponse.redirect(url, 308);
+    }
+  }
 
   // Throttle repeated attempts against login/signup endpoints — these had
   // zero protection against brute-forcing a passcode or password before this.
@@ -60,12 +80,8 @@ export default async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/admin/:path*",
-    "/checkin/:path*",
-    "/api/staff/login",
-    "/api/auth/register",
-    "/api/auth/callback/credentials",
-    "/api/registrations/:path*",
-  ],
+  // Broad on purpose now — the canonical-host redirect at the top needs to
+  // run on every route, not just the specific paths the other checks below
+  // care about (those still gate themselves internally on pathname).
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
