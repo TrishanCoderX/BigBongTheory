@@ -118,6 +118,7 @@ export const crew: CrewMember[] = [
     name: "Arkaprabha",
     role: "General Manager, Logistics — Kolkata",
     line: "Because apparently, “we’ll figure it out on the day” is not considered a logistics strategy.",
+    image: "/crew/arkaprabha.jpg",
   },
   {
     name: "Annwesha",
