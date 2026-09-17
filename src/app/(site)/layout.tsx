@@ -4,6 +4,7 @@ import SiteChrome from "@/components/SiteChrome";
 import Footer from "@/components/Footer";
 import Preloader from "@/components/Preloader";
 import BackgroundAudio from "@/components/BackgroundAudio";
+import VisitTracker from "@/components/VisitTracker";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <CustomCursor />
       <SiteChrome />
       <BackgroundAudio />
+      <VisitTracker />
       <main className="flex-grow">{children}</main>
       <Footer />
     </div>

@@ -40,6 +40,8 @@ interface Stats {
   last7Days: DayStat[];
   totalApplications: number;
   totalSponsorApplications: number;
+  totalVisits: number;
+  visitsLast7Days: DayStat[];
   revenue?: number;
 }
 
@@ -191,6 +193,7 @@ export default function AdminPage() {
     { k: "CHECKED IN", v: `${stats.checkedInCount}`, d: `${stats.checkedInPct}% OF ATTENDEES` },
     { k: "APPLICATIONS", v: String(stats.totalApplications), d: "JOIN BBT SUBMISSIONS" },
     { k: "SPONSOR INQUIRIES", v: String(stats.totalSponsorApplications), d: "SPONSORSHIP SUBMISSIONS" },
+    { k: "SITE VISITS", v: stats.totalVisits.toLocaleString("en-IN"), d: "TOTAL PAGE LOADS" },
     {
       k: "REVENUE",
       v: stats.revenue !== undefined ? `₹${stats.revenue.toLocaleString("en-IN")}` : "",
@@ -267,7 +270,7 @@ export default function AdminPage() {
           />
         )}
 
-        <div className="grid grid-cols-2 lg:grid-cols-6 gap-3.5 mt-6.5">
+        <div className="grid grid-cols-2 lg:grid-cols-7 gap-3.5 mt-6.5">
           {statCards.map((s) =>
             s.hide ? (
               <div key={s.k} className="bg-white border border-[#14141A]/[0.12] p-5.5 flex flex-col justify-center">
@@ -325,6 +328,11 @@ export default function AdminPage() {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="bg-white border border-[#14141A]/[0.12] p-4.5 mt-3.5">
+          <div className="font-mono text-[11px] tracking-[0.18em] uppercase mb-4">SITE VISITS, LAST 7 DAYS</div>
+          <LineChart data={stats.visitsLast7Days.map((d) => ({ label: d.label, value: d.count }))} />
         </div>
 
         <div className="bg-white border border-[#14141A]/[0.12] mt-3.5">

@@ -166,3 +166,15 @@ model SponsorApplication {
 
   @@index([createdAt])
 }
+
+// One row per real page load, recorded client-side (see VisitTracker) so a
+// bot/crawler hitting the URL directly without running JS doesn't inflate
+// the count — this is meant to answer "how many times has a person actually
+// opened the site," not raw server hit counts.
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

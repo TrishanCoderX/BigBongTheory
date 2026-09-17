@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { roleAtLeast, type StaffRole } from "@/lib/roles";
 
 export interface StaffSession {
@@ -49,7 +49,13 @@ export function useStaffAuth() {
     setStaff(null);
   };
 
-  const can = (min: StaffRole) => roleAtLeast(staff?.role, min);
+  // Memoized so callers using `can` as an effect dependency don't re-fire on
+  // every render — without this it was a fresh function identity each time,
+  // which (combined with admin/page.tsx's polling effects depending on it)
+  // caused a fetch -> setState -> re-render -> new `can` -> effect re-fires
+  // -> fetch loop that exhausted the browser's connection pool within
+  // seconds of loading /admin.
+  const can = useCallback((min: StaffRole) => roleAtLeast(staff?.role, min), [staff]);
 
   return { staff, authed: !!staff, loading, enter, exit, can };
 }

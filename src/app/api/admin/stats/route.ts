@@ -6,13 +6,19 @@ export async function GET() {
   if ("error" in gate) return gate.error;
   const { session } = gate;
 
-  const [events, tiers, registrations, totalApplications, totalSponsorApplications] = await Promise.all([
-    prisma.event.findMany({ orderBy: { createdAt: "asc" } }),
-    prisma.tier.findMany(),
-    prisma.registration.findMany(),
-    prisma.joinApplication.count(),
-    prisma.sponsorApplication.count(),
-  ]);
+  const [events, tiers, registrations, totalApplications, totalSponsorApplications, totalVisits, recentVisits] =
+    await Promise.all([
+      prisma.event.findMany({ orderBy: { createdAt: "asc" } }),
+      prisma.tier.findMany(),
+      prisma.registration.findMany(),
+      prisma.joinApplication.count(),
+      prisma.sponsorApplication.count(),
+      prisma.pageView.count(),
+      prisma.pageView.findMany({
+        where: { createdAt: { gte: new Date(Date.now() - 7 * 86400000) } },
+        select: { createdAt: true },
+      }),
+    ]);
 
   const ticketsSold = registrations.reduce((sum, r) => sum + r.qty, 0);
   const checkedInCount = registrations.filter((r) => r.checkedIn).length;
@@ -45,6 +51,16 @@ export async function GET() {
     return { label, count };
   });
 
+  const visitsLast7Days = Array.from({ length: 7 }).map((_, i) => {
+    const dayOffset = 6 - i;
+    const date = new Date(Date.now() - dayOffset * 86400000);
+    const label = date.toLocaleDateString("en-IN", { weekday: "short" }).toUpperCase();
+    const count = recentVisits.filter(
+      (v) => new Date(v.createdAt).toDateString() === date.toDateString()
+    ).length;
+    return { label, count };
+  });
+
   const stats: Record<string, unknown> = {
     totalEvents: events.length,
     totalAttendees: registrations.length,
@@ -56,6 +72,8 @@ export async function GET() {
     last7Days,
     totalApplications,
     totalSponsorApplications,
+    totalVisits,
+    visitsLast7Days,
   };
 
   if (staffRoleAtLeast(session.role, "SUPER_ADMIN")) {
